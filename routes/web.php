@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Databases\SessionAuthentication;
+use App\Http\Controllers\DockerController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +17,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware([RedirectIfAuthenticated::class])->group(function () {
+    Route::get('/', [DockerController::class, "getContainers"]);
+
+    Route::post('logout', [SessionAuthentication::class, "logout"]);
+
+    Route::post('createContainer', [DockerController::class, "createContainer"]);
+    Route::post('stopContainer', [DockerController::class, "stopContainer"]);
+    Route::post('startContainer', [DockerController::class, "startContainer"]);
+    Route::post('deleteContainer', [DockerController::class, "deleteContainer"]);
 });
+
+Route::post('login', [SessionAuthentication::class, "authentication"]);
