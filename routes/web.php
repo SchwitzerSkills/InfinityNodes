@@ -18,7 +18,9 @@ use App\Http\Controllers\DockerController;
 */
 
 Route::middleware([RedirectIfAuthenticated::class])->group(function () {
-    Route::get('/', [DockerController::class, "getContainers"]);
+    Route::get('dashboard', [DockerController::class, "getContainers"]);
+
+    Route::get('container/{id}', [DockerController::class, "attachContainer"]);
 
     Route::post('logout', [SessionAuthentication::class, "logout"]);
 
@@ -28,4 +30,10 @@ Route::middleware([RedirectIfAuthenticated::class])->group(function () {
     Route::post('deleteContainer', [DockerController::class, "deleteContainer"]);
 });
 
-Route::post('login', [SessionAuthentication::class, "authentication"]);
+Route::get('/', function(){
+    return view("home");
+});
+
+Route::get('login', [SessionAuthentication::class, "getSession"]);
+
+Route::post('login/auth', [SessionAuthentication::class, "authentication"]);

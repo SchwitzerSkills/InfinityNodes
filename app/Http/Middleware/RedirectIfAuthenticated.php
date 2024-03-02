@@ -15,6 +15,6 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return request()->is("/") ? (session()->has("active") ? $next($request) : response()->view("login")) : (session()->has("active") ? $next($request) : redirect("/"));
+        return session()->has("active") ? $next($request) : redirect("login");
     }
 }

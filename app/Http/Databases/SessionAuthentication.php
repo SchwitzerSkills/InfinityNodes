@@ -14,7 +14,7 @@ class SessionAuthentication
         $count = DB::table("users")->where("username", $username);
 
         if(!$count){
-            return redirect("/")->with("message", "Username oder Passwort falsch!");
+            return redirect("login")->with("message", "Username oder Passwort falsch!");
         }
 
         $passwordHash = DB::table("users")->select("password")->where("username", $username)->get();
@@ -22,11 +22,11 @@ class SessionAuthentication
         foreach($passwordHash as $passwordHash) $passwordHash = $passwordHash->password;
 
         if(!password_verify($password, $passwordHash)){
-            return redirect("/")->with("message", "Username oder Passwort falsch!");
+            return redirect("login")->with("message", "Username oder Passwort falsch!");
         }
 
         session()->put("active", true);
-        return redirect("/");
+        return redirect("dashboard");
     }
     
     public function logout(){
@@ -34,6 +34,14 @@ class SessionAuthentication
             session()->forget("active");
         }
 
-        return redirect("/");
+        return redirect("login");
+    }
+
+    public function getSession(){
+        if(session()->has("active")){
+            return redirect("dashboard");
+        }
+
+        return view("login");
     }
 }

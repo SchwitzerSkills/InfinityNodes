@@ -13,7 +13,7 @@
             <div>
                 <p class="text-sm text-red-500 text-center mb-4">{{ session('message') }}</p>
             </div>
-            <form method="post" action="{{ url('login') }}">
+            <form method="post" action="{{ url('login/auth') }}">
                 @csrf
                 <div class="mb-4">
                     <label for="username" class="block text-gray-700 text-sm font-bold mb-2">Username</label>

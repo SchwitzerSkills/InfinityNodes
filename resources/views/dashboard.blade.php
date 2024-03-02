@@ -52,53 +52,11 @@
 <div class="flex justify-center">
     <p class="text-red-500">{{ session("message") }}</p>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-    @foreach ($containers as $container)
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <div>
-          <p class="font-bold text-gray-700">ID: <span class="font-normal">{{ substr($container["id"], 0, 12) }}</span></p>
-        </div>
-        <div>
-          <p class="font-bold text-gray-700">Name: <span class="font-normal">{{ str_replace("/", "", $container["name"]) }}</span></p>
-        </div>
-        <div>
-          <p class="font-bold text-gray-700">Image: <span class="font-normal">{{ $container["image"] }}</span></p>
-        </div>
-        <div>
-          <p class="font-bold text-gray-700">State: <span class="font-normal">{{ $container["state"] }}</span></p>
-        </div>
-        <div>
-          <p class="font-bold text-gray-700">Port: <span class="font-normal">{{ $container["port"] }}</span></p>
-        </div>
-        <div>
-          <p class="font-bold text-gray-700">IP: <span class="font-normal">{{ $container["ip"] }}</span></p>
-        </div>
-        <div>
-          <p class="font-bold text-gray-700">Link: <a class="font-normal" href="http://{{ $container['ip'] }}:{{ $container['port'] }}">Zur Website</a></p>
-        </div>
-        <div class="flex justify-end pt-2">
-          <div class="mr-5">
-            @if ($container["state"] == "running")
-              <form method="post" action="{{ url('stopContainer') }}">
-                @csrf
-                <button id="stopContainer" name="stopContainer" value='{{ $container["id"] }}' class="modal-close px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400">Stoppen</button>
-              </form>
-            @else
-              <form method="post" action="{{ url('startContainer') }}">
-                @csrf
-                <button id="startContainer" name="startContainer" value='{{ $container["id"] }}' class="modal-close px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400">Starten</button>
-              </form>
-            @endif
-          </div>
-          <div>
-            <form method="post" action="{{ url('deleteContainer') }}">
-              @csrf
-              <button id="deleteContainer" name="deleteContainer" value='{{ $container["id"] }}' class="modal-close px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400">Löschen</button>
-            </form>
-          </div>
-        </div>
-      </div>
+@foreach ($containers as $container)
+      <p>{{ json_encode($container) }}</p>
     @endforeach
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+
 </div>
 <script>
   const openModalButtons = document.querySelectorAll('.modal-open');

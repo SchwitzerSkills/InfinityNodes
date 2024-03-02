@@ -8,6 +8,7 @@ use Docker\API\Model\ContainersCreatePostBody;
 use Docker\API\Model\HostConfig;
 use Docker\API\Model\PortBinding;
 use Docker\Docker;
+use Docker\API\Endpoint\ContainerAttach;
 
 class DockerController extends Controller
 {
@@ -20,37 +21,42 @@ class DockerController extends Controller
         }
 
         $containerConfig = new ContainersCreatePostBody();
-        $containerConfig->setImage('httpd');
+        $containerConfig->setImage('test');
+        $containerConfig->setCmd(["httpd-foreground"]);
+        $containerConfig->setExposedPorts(["80/tcp" => new \ArrayObject(), "22/tcp" => new \ArrayObject()]);
 
-        $portBinding = new PortBinding();
-        // $portBinding->setHostPort('8080');
-        $portBinding->setHostIp('0.0.0.0');
-
-        $portMap = new \ArrayObject();
-        $portMap['80/tcp'] = [$portBinding];
-
+        $PortBinding = new PortBinding();
+        
         $hostConfig = new HostConfig();
-        $hostConfig->setPortBindings($portMap);
-
+        $hostConfig->setPortBindings(new \ArrayObject([
+            "80/tcp" => [$PortBinding],
+            "22/tcp" => [$PortBinding]
+        ]));
         $containerConfig->setHostConfig($hostConfig);
+
         $containerCreateResult = $docker->containerCreate($containerConfig);
         $docker->containerStart($containerCreateResult->getId());
-
-        return redirect("/");
-    }
+        
+        return redirect("dashboard");
+}
 
     public function getContainers(){   
         $docker = Docker::create();
         $containers = $docker->containerList();
         $containerInfos = array();
+        $containerPorts = array();
 
         foreach ($containers as $container) {
             foreach($container->getNames() as $containerName){
+                // $containerInfos[] = array("id" => $container->getId(), "image" => $container->getImage(), "name" => $containerName, "state" => $container->getState(), "ip" => $_SERVER["SERVER_ADDR"]);
                 foreach($container->getPorts() as $ports){
-                    $containerInfos[] = array("id" => $container->getId(), "image" => $container->getImage(), "name" => $containerName, "state" => $container->getState(), "port" => $ports->getPublicPort(), "ip" => $_SERVER["SERVER_ADDR"]);
+                    // $containerPorts[] = $ports;
+                    var_dump($ports);
                 }
+                // $containerInfos["ports"] = $containerPorts;
             }
         }
+        exit;
         return view("dashboard", ["containers" => $containerInfos]);
     }
 
@@ -59,7 +65,7 @@ class DockerController extends Controller
         $docker = Docker::create();
         $docker->containerPause($conatinerId);
 
-        return redirect("/");
+        return redirect("dashboard");
     }
 
     public function startContainer(Request $request){
@@ -67,7 +73,7 @@ class DockerController extends Controller
         $docker = Docker::create();
         $docker->containerUnpause($conatinerId);
 
-        return redirect("/");
+        return redirect("dashboard");
     }
 
     public function deleteContainer(Request $request){
@@ -76,6 +82,11 @@ class DockerController extends Controller
         $docker->containerStop($conatinerId);
         $docker->containerDelete($conatinerId);
 
-        return redirect("/");
+        return redirect("dashboard");
+    }
+
+    public function attachContainer(Request $request){
+        $docker = Docker::create();
+  
     }
 }
