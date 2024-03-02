@@ -26,6 +26,7 @@ class SessionAuthentication
         }
 
         session()->put("active", true);
+        session()->put("username", $username);
         return redirect("dashboard");
     }
     
@@ -37,11 +38,11 @@ class SessionAuthentication
         return redirect("login");
     }
 
-    public function getSession(){
+    public function getSession(Request $request){
         if(session()->has("active")){
             return redirect("dashboard");
         }
 
-        return view("login");
+        return $request->is("login") ? view("login") : view("register");
     }
 }

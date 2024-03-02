@@ -21,11 +21,11 @@ class DockerController extends Controller
         }
 
         $containerConfig = new ContainersCreatePostBody();
-        $containerConfig->setImage('test');
-        $containerConfig->setCmd(["httpd-foreground"]);
+        $containerConfig->setImage('httpd');
         $containerConfig->setExposedPorts(["80/tcp" => new \ArrayObject(), "22/tcp" => new \ArrayObject()]);
 
         $PortBinding = new PortBinding();
+        $PortBinding->setHostIp("0.0.0.0");
         
         $hostConfig = new HostConfig();
         $hostConfig->setPortBindings(new \ArrayObject([
@@ -48,15 +48,14 @@ class DockerController extends Controller
 
         foreach ($containers as $container) {
             foreach($container->getNames() as $containerName){
-                // $containerInfos[] = array("id" => $container->getId(), "image" => $container->getImage(), "name" => $containerName, "state" => $container->getState(), "ip" => $_SERVER["SERVER_ADDR"]);
                 foreach($container->getPorts() as $ports){
-                    // $containerPorts[] = $ports;
-                    var_dump($ports);
+                    $containerPorts[] = ["public" => $ports->getPublicPort(), "protocol" => $this->translatePort($ports->getPrivatePort())];
                 }
-                // $containerInfos["ports"] = $containerPorts;
+                $containerInfos[] = array("id" => $container->getId(), "image" => $container->getImage(), "name" => $containerName, "state" => $container->getState(), "ip" => $_SERVER["SERVER_ADDR"], "ports" => $containerPorts);
+                $containerPorts = [];
             }
         }
-        exit;
+
         return view("dashboard", ["containers" => $containerInfos]);
     }
 
@@ -88,5 +87,15 @@ class DockerController extends Controller
     public function attachContainer(Request $request){
         $docker = Docker::create();
   
+    }
+
+    public function translatePort(int $ports): string
+    {
+        $portsTranslate = [
+            22 => "SSH",
+            80 => "HTTP"
+        ];
+
+        return $portsTranslate[$ports];
     }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InfinityNodes - Login</title>
+    <title>InfinityNodes - Registrieren</title>
     <link rel="stylesheet" href="{{ url('fonts/style.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ url('img/favicon.ico') }}">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,8 +22,8 @@
           <div class="ml-10 flex items-baseline space-x-4">
             <a href="{{ url('/') }}" class="text-lg text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md">Startseite</a>
             <a href="{{ url('containers') }}" class="text-lg text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md">Containers</a>
-            <a href="{{ url('login') }}" class="text-lg text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md underline">Login</a>
-            <a href="{{ url('register') }}" class="text-lg text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md">Registieren</a>
+            <a href="{{ url('login') }}" class="text-lg text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md">Login</a>
+            <a href="{{ url('register') }}" class="text-lg text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md underline">Registieren</a>
           </div>
         </div>
         <div class="md:hidden">
@@ -36,8 +36,8 @@
     <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white shadow-md z-40">
       <a href="{{ url('/') }}" class="block px-3 py-2 rounded-md text-base text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md">Startseite</a>
       <a href="{{ url('containers') }}" class="block px-3 py-2 rounded-md text-base text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md">Containers</a>
-      <a href="{{ url('login') }}" class="block px-3 py-2 rounded-md text-base text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md underline">Login</a>
-      <a href="{{ url('register') }}" class="block px-3 py-2 rounded-md text-base text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md">Registrieren</a>
+      <a href="{{ url('login') }}" class="block px-3 py-2 rounded-md text-base text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md">Login</a>
+      <a href="{{ url('register') }}" class="block px-3 py-2 rounded-md text-base text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md underline">Registrieren</a>
     </div>
   </div>
     <div class="flex items-center justify-center relative top-32 md:relative md:top-32 lg:relative lg:top-32">

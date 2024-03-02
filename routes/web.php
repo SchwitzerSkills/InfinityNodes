@@ -22,7 +22,7 @@ Route::middleware([RedirectIfAuthenticated::class])->group(function () {
 
     Route::get('container/{id}', [DockerController::class, "attachContainer"]);
 
-    Route::post('logout', [SessionAuthentication::class, "logout"]);
+    Route::get('logout', [SessionAuthentication::class, "logout"]);
 
     Route::post('createContainer', [DockerController::class, "createContainer"]);
     Route::post('stopContainer', [DockerController::class, "stopContainer"]);
@@ -33,6 +33,8 @@ Route::middleware([RedirectIfAuthenticated::class])->group(function () {
 Route::get('/', function(){
     return view("home");
 });
+
+Route::get('register', [SessionAuthentication::class, "getSession"]);
 
 Route::get('login', [SessionAuthentication::class, "getSession"]);
 
