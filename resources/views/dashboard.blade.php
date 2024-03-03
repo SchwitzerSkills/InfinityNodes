@@ -135,7 +135,7 @@
         @endforeach
       </div>
       <div>
-        <p class="font-bold text-gray-700">IP: <span class="font-normal">{{ $container["ip"] }}</span></p>
+        <p class="font-bold text-gray-700">IP: <span class="font-normal">{{ $container["ip"] }}d</span></p>
       </div>
       <div>
 
